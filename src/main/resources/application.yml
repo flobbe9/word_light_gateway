@@ -1,21 +1,2 @@
 server:
     port: 4000
-
-spring:
-    application:
-        name: gateway
-
-    # TODO: do this in java
-    cloud:
-        gateway:
-            globalcors:
-                corsConfigurations:
-                    '[/**]':
-                        # TODO: replace this with prod url eventually
-                        allowedOrigins: "http://localhost:3000"
-                        allowedHeaders: "*"
-                        allowedMethods: 
-                            - GET
-                            - POST
-                            - PUT
-                            - DELETE
