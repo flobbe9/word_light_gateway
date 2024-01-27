@@ -1,2 +1,9 @@
 server:
-    port: 4000
+    port: ${API_PORT}  
+    error:
+        include-message: always
+
+spring:
+    config:
+        # include .env file
+        import: optional:file:.env[.properties]

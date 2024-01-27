@@ -2,6 +2,7 @@ package com.example.gateway.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -22,11 +23,17 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  */
 @Configuration
 @EnableWebFlux
-// TODO: 
-    // .env file
-    // .env variables
-    // add dev branch
 public class RouterConfig implements WebFluxConfigurer {
+    
+    @Value("${DOCUMENT_BUILDER_BASE_URL}")
+    private String documentBuilderBaseUrl;
+    
+    @Value("${USER_SERVICE_BASE_URL}")
+    private String userServiceBaseUrl;
+
+    @Value("${FRONTEND_BASE_URL}")
+    private String frontendBaseUrl;
+
 
     @Bean
     RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
@@ -36,16 +43,16 @@ public class RouterConfig implements WebFluxConfigurer {
                             route.path("/api/documentBuilder/**")
                                 .filters(filter -> filter
                                     // remove duplicate headers, order of calls matters!
-                                    .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "http://localhost:3000")
+                                    .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, frontendBaseUrl)
                                     .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                     .addResponseHeader("Access-Control-Allow-Credentials", "true")
                                     .removeResponseHeader("Access-Control-Allow-Credentials")
                                 )
-                                 .uri("http://localhost:4001"))
+                                 .uri(documentBuilderBaseUrl))
 
                         .route("user_service", route -> 
                             route.path("/api/appUser/**")
-                                 .uri("http://localhost:4002"))
+                                 .uri(userServiceBaseUrl))
                         .build();
     }
 
@@ -59,7 +66,7 @@ public class RouterConfig implements WebFluxConfigurer {
     CorsWebFilter corsWebFilter() {
         
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfig.setAllowedOrigins(List.of(frontendBaseUrl));
         corsConfig.addAllowedMethod(HttpMethod.GET.name());
         corsConfig.addAllowedMethod(HttpMethod.POST.name());
         corsConfig.addAllowedMethod(HttpMethod.PUT.name());
