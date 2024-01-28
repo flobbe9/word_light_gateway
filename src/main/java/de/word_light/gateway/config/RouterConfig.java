@@ -17,10 +17,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  */
 @Configuration
 @EnableWebFlux
-// TODO: add pipeline
-// TODO: add dockerfile, push to hub
-// TODO: upgrade to v0.0.6
-// TODO: upgrade to new spring boot
 // TODO: update docker-compose.all.yml
 // TODO: try with ssl
 public class RouterConfig implements WebFluxConfigurer {
