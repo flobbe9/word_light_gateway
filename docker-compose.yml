@@ -2,9 +2,8 @@ version: "3.9"
 
 services:
   gateway:
-    build: .
     image: flobbe9/word_light_gateway
     container_name: ${API_NAME}
     ports: 
-        - ${API_PORT}:${API_PORT}
+      - ${API_PORT}:${API_PORT}
     env_file: .env
