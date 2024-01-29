@@ -1,13 +1,20 @@
 package de.word_light.gateway.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+
+import jakarta.ws.rs.HttpMethod;
 
 
 /**
@@ -17,7 +24,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  */
 @Configuration
 @EnableWebFlux
-// TODO: update docker-compose.all.yml 
+// TODO: update prod .env eventually
 // TODO: try with ssl
 public class RouterConfig implements WebFluxConfigurer {
     
@@ -33,9 +40,6 @@ public class RouterConfig implements WebFluxConfigurer {
 
     @Value("${FRONTEND_BASE_URL}")
     private String FRONTEND_BASE_URL;
-
-    @Value("${BASE_URL}")
-    private String BASE_URL;
 
 
     /**
@@ -54,7 +58,7 @@ public class RouterConfig implements WebFluxConfigurer {
                             // remove duplicate headers, order of calls matters!
                             .filters(filter -> filter
                                 // assuming response to gateway, since everything is routed by it
-                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, BASE_URL)
+                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, FRONTEND_BASE_URL)
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS))
@@ -65,7 +69,7 @@ public class RouterConfig implements WebFluxConfigurer {
                             // remove duplicate headers, order of calls matters!
                             .filters(filter -> filter
                                 // assuming response to gateway, since everything is routed by it
-                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, BASE_URL)
+                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, FRONTEND_BASE_URL)
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS))
@@ -75,5 +79,29 @@ public class RouterConfig implements WebFluxConfigurer {
                             .path("/**")
                             .uri(FRONTEND_BASE_URL))
                         .build();
+    }
+
+
+    /**
+     * Configure CORS. 
+     * Use this with spring cloud
+     */
+    @Bean
+    CorsWebFilter corsWebFilter() {
+        
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(List.of(FRONTEND_BASE_URL));
+        corsConfig.addAllowedMethod(HttpMethod.GET);
+        corsConfig.addAllowedMethod(HttpMethod.POST);
+        corsConfig.addAllowedMethod(HttpMethod.PUT);
+        corsConfig.addAllowedMethod(HttpMethod.DELETE);
+        corsConfig.addAllowedMethod(HttpMethod.OPTIONS);
+        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
+        return new CorsWebFilter(source);
     }
 }
