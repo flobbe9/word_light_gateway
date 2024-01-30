@@ -3,6 +3,14 @@ server:
     error:
         include-message: always
 
+    ### SSL
+    ssl:
+        key-store-type: ${SSL_KEY_STORE_TYPE}
+        key-store: ${SSL_KEY_STORE}
+        key-store-password: ${SSL_KEY_STORE_PASSWORD}
+        key-alias: ${SSL_KEY_ALIAS}
+        enabled: ${SSL_ENABLED}
+
 spring:
     application:
         name: ${API_NAME}
