@@ -83,8 +83,9 @@ public class RouterConfig implements WebFluxConfigurer {
 
 
     /**
-     * Configure CORS. 
-     * Use this with spring cloud
+     * Configure CORS.
+     * 
+     * @return
      */
     @Bean
     CorsWebFilter corsWebFilter() {
