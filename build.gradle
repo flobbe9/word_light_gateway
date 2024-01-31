@@ -28,7 +28,6 @@ ext {
 dependencies {
     // spring
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:4.1.0'
 
     // lombok
 	compileOnly 'org.projectlombok:lombok'

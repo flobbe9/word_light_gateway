@@ -17,11 +17,3 @@ spring:
     config:
         # include .env file
         import: optional:file:.env[.properties]
-
-eureka:
-    instance:
-        hostname: ${API_HOST}
-        prefer-ip-address: true
-    client:
-        serviceUrl:
-            defaultZone: ${DISCOVERY_SERVICE_BASE_URL}/${DISCOVERY_SERVICE_MAPPING}
