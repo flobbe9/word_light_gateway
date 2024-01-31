@@ -18,4 +18,4 @@ jobs:
         with: 
           distribution: 'temurin'
           java-version: '17'
-      - run: gradle clean build --args=--sslPassword=${{ secrets.SSL_KEY_STORE_PASSWORD}}
+      - run: gradle clean build
