@@ -6,3 +6,6 @@ services:
     container_name: ${API_NAME}
     ports: 
       - ${API_PORT}:${API_PORT}
+    environment:
+      # replace prod ip for local testing
+      - HOST=localhost
