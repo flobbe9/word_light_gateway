@@ -24,3 +24,4 @@ spring:
                         trustedX509Certificates:
                             - classpath:ssl/word-light.de.crt
                             - classpath:ssl/localhost.crt
+                            - classpath:ssl/api.crt
