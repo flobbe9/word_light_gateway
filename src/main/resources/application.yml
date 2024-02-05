@@ -2,6 +2,13 @@ server:
     port: ${API_PORT}
     error:
         include-message: always
+    ### SSL
+    ssl:
+        key-store-type: ${SSL_KEY_STORE_TYPE}
+        key-store: ${SSL_KEY_STORE}
+        key-store-password: ${SSL_KEY_STORE_PASSWORD}
+        key-alias: ${SSL_KEY_ALIAS}
+        enabled: ${SSL_ENABLED}
 
 spring:
     application:
@@ -9,3 +16,12 @@ spring:
     config:
         # include .env file
         import: optional:file:.env[.properties]
+    cloud:
+        gateway:
+            httpclient:
+                    ssl:
+                        # useInsecureTrustManager: true
+                        trustedX509Certificates:
+                            - classpath:ssl/word-light.de.crt
+                            - classpath:ssl/localhost.crt
+                            - classpath:ssl/api.crt
