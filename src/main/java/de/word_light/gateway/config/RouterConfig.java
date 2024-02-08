@@ -23,7 +23,6 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  */
 @Configuration
 @EnableWebFlux
-// TODO: update prod .env eventually
 public class RouterConfig implements WebFluxConfigurer {
     
     @Value("${DOCUMENT_BUILDER_BASE_URL}")
@@ -55,7 +54,6 @@ public class RouterConfig implements WebFluxConfigurer {
                             .path("/" + DOCUMENT_BUILDER_MAPPING + "/**")
                             // remove duplicate headers, order of calls matters!
                             .filters(filter -> filter
-                                // assuming response to gateway, since everything is routed by it
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, FRONTEND_BASE_URL)
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
@@ -67,7 +65,6 @@ public class RouterConfig implements WebFluxConfigurer {
                             .path("/" + USER_SERVICE_MAPPING + "/**")
                             // remove duplicate headers, order of calls matters!
                             .filters(filter -> filter
-                                // assuming response to gateway, since everything is routed by it
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, FRONTEND_BASE_URL)
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
