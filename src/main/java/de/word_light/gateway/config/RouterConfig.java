@@ -51,25 +51,25 @@ public class RouterConfig implements WebFluxConfigurer {
 
         return builder.routes()
                         .route("document_builder", route -> route
-                            .path("/" + DOCUMENT_BUILDER_MAPPING + "/**")
+                            .path("/" + this.DOCUMENT_BUILDER_MAPPING + "/**")
                             // remove duplicate headers, order of calls matters!
                             .filters(filter -> filter
-                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, FRONTEND_BASE_URL)
+                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, this.FRONTEND_BASE_URL)
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*"))
-                            .uri(DOCUMENT_BUILDER_BASE_URL))
+                            .uri(this.DOCUMENT_BUILDER_BASE_URL))
 
                         .route("user_service", route -> route
-                            .path("/" + USER_SERVICE_MAPPING + "/**")
+                            .path("/" + this.USER_SERVICE_MAPPING + "/**")
                             // remove duplicate headers, order of calls matters!
                             .filters(filter -> filter
-                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, FRONTEND_BASE_URL)
+                                .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, this.FRONTEND_BASE_URL)
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)
                                 .addResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
                                 .removeResponseHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS))
-                            .uri(USER_SERVICE_BASE_URL))
+                            .uri(this.USER_SERVICE_BASE_URL))
                         .build();
     }
 
@@ -83,7 +83,7 @@ public class RouterConfig implements WebFluxConfigurer {
     CorsWebFilter corsWebFilter() {
         
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of(FRONTEND_BASE_URL));
+        corsConfig.setAllowedOrigins(List.of(this.FRONTEND_BASE_URL));
         corsConfig.addAllowedMethod(HttpMethod.GET);
         corsConfig.addAllowedMethod(HttpMethod.POST);
         corsConfig.addAllowedMethod(HttpMethod.PUT);
