@@ -2,6 +2,8 @@ package de.word_light.gateway.config;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import de.word_light.gateway.GatewayApplication;
 import lombok.extern.log4j.Log4j2;
 
 
@@ -36,7 +38,7 @@ public class ApplicationInitializer {
      */
     public void init() {
         
-        log.info("Initializing API...");
+        log.info("Initializing API v" + GatewayApplication.getApiVersion()  + "...");
     }
 
 
